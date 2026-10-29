@@ -1,0 +1,39 @@
+name: Instagram yayın
+
+on:
+  push:
+    branches: [main]
+    paths: ["queue/**"]       # onay commit'i gelince hemen bakar
+  schedule:
+    - cron: "*/30 * * * *"    # zamanı sonra gelenler için 30 dk'da bir kontrol
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Zamanı gelen onaylı postları paylaş
+        run: python publish.py
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_API_HOST: ${{ vars.IG_API_HOST }}
+          GRAPH_API_VERSION: v23.0
+      - name: Durumu repo'ya yaz
+        run: |
+          git config user.name "padel-office-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add queue
+          git diff --cached --quiet || (git commit -m "Yayın durumu güncellendi" && git push)

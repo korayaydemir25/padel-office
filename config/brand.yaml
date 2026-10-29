@@ -1,0 +1,63 @@
+# ------------------------------------------------------------
+# MARKA REHBERİ — tüm ajanlar bunu okur (prompt cache ile ucuz)
+# Kendi kulübüne göre doldur.
+# ------------------------------------------------------------
+club:
+  name: "Örnek Padel Club"
+  city: "Ankara"
+  instagram_handle: "@ornekpadel"
+  website: "ornekpadel.com"
+  booking_info: "Rezervasyon: profildeki link veya 0 555 000 00 00"
+
+audience: >
+  25-45 yaş arası, şehirde yaşayan, sporu sosyalleşme aracı olarak gören
+  yetişkinler; padele yeni başlayanlar ve orta seviye oyuncular.
+
+tone: >
+  Samimi, enerjik, davetkâr. "Sen" diye hitap et. Abartılı vaatler, rakip
+  kulüpleri kötüleme ve kesin sağlık iddiaları yok. Emoji ölçülü (en fazla 3).
+
+language: "tr"
+
+content_pillars:          # haftalık içerik bu sütunlara dağıtılır
+  - "Teknik ipucu (başlangıç/orta seviye)"
+  - "Kulüp hayatı ve üye hikâyeleri"
+  - "Etkinlik / turnuva / ders duyurusu"
+  - "Eğlenceli trend formatı (reel)"
+  - "Kampanya veya boş kort hatırlatması"
+
+competitors:              # araştırma ajanının incelediği hesaplar
+  - "@worldpadeltour"
+  - "@premierpadel"
+
+hashtags:
+  always: ["#padel", "#ankarapadel"]
+  pool: ["#padeltürkiye", "#padellife", "#padelturkey", "#padeltime", "#sporankara"]
+  max_per_post: 8
+
+banned_words:             # denetimde otomatik reddedilir
+  - "garanti"
+  - "en iyi kulüp"
+  - "kilo verdirir"
+
+weekly_post_count: 5
+
+# Veri yokken kullanılan varsayılan yayın pencereleri (yerel saat).
+# Analiz ajanı yeterli veri toplayınca kendi en iyi saatlerini hesaplar.
+posting_windows:
+  weekday: ["07:45", "12:30", "19:30", "21:00"]
+  weekend: ["10:30", "18:00"]
+timezone: "Europe/Istanbul"
+
+# Günlük mod: onaydan sonra postun paylaşılacağı saat (geçtiyse hemen paylaşılır)
+daily_publish_time:
+  weekday: "19:30"
+  weekend: "18:00"
+
+visual:
+  primary_color: "#0B3D2E"
+  accent_color: "#C8F25C"
+  text_color: "#FFFFFF"
+  font_bold: ""           # boşsa sistemdeki DejaVuSans-Bold kullanılır
+  font_regular: ""
+  logo_path: "assets/logo.png"   # varsa görsellere eklenir
