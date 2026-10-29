@@ -96,6 +96,27 @@ def cmd_prepare(path: str) -> None:
                       "issues": issues}, ensure_ascii=False, indent=2))
 
 
+def cmd_add_reel(video: str, meta_path: str) -> None:
+    """Hazır bir reels videosunu kuyruğa ekler. meta: {id?, pillar, caption, hashtags}."""
+    import shutil
+    meta = json.loads(Path(meta_path).read_text(encoding="utf-8"))
+    pid = meta.get("id") or datetime.now(TZ).date().isoformat() + "-reel"
+    QUEUE.mkdir(exist_ok=True)
+    shutil.copy(video, QUEUE / f"{pid}.mp4")
+    tags = meta.get("hashtags") or []
+    item = {"id": pid, "pillar": meta.get("pillar"), "template": "reel",
+            "headline": meta.get("headline"), "caption": meta["caption"],
+            "hashtags": " ".join(tags) if isinstance(tags, list) else tags,
+            "video": f"{pid}.mp4", "image": None, "issues": [],
+            "status": "pending_approval", "created_at": datetime.now(TZ).isoformat(timespec="seconds")}
+    item["issues"] = rule_check({**item, "media_path": str(QUEUE / item["video"])}, BRAND)
+    if item["issues"]:
+        item["status"] = "needs_fix"
+    _save(item)
+    print(json.dumps({"id": pid, "status": item["status"], "issues": item["issues"]},
+                     ensure_ascii=False, indent=2))
+
+
 def _publish_time(now: datetime) -> datetime:
     d = BRAND.get("daily_publish_time", {"weekday": "19:30", "weekend": "18:00"})
     hhmm = d["weekend"] if now.weekday() >= 5 else d["weekday"]
@@ -136,4 +157,5 @@ if __name__ == "__main__":
      "prepare": lambda: cmd_prepare(a[1]),
      "approve": lambda: cmd_approve(a[1], a[2] if len(a) > 2 else None),
      "skip": lambda: cmd_skip(a[1]),
+     "add-reel": lambda: cmd_add_reel(a[1], a[2]),
      "status": lambda: cmd_status()}[a[0]]()

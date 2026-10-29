@@ -3,11 +3,11 @@
 # Kendi kulübüne göre doldur.
 # ------------------------------------------------------------
 club:
-  name: "Örnek Padel Club"
+  name: "Padel Club Ankara"
   city: "Ankara"
-  instagram_handle: "@ornekpadel"
-  website: "ornekpadel.com"
-  booking_info: "Rezervasyon: profildeki link veya 0 555 000 00 00"
+  instagram_handle: "@padelclubankara"
+  email: "padelclubankara@gmail.com"
+  booking_info: "Katılmak için DM at 📩"
 
 audience: >
   25-45 yaş arası, şehirde yaşayan, sporu sosyalleşme aracı olarak gören
@@ -31,7 +31,7 @@ competitors:              # araştırma ajanının incelediği hesaplar
   - "@premierpadel"
 
 hashtags:
-  always: ["#padel", "#ankarapadel"]
+  always: ["#padel", "#ankarapadel", "#padelclubankara"]
   pool: ["#padeltürkiye", "#padellife", "#padelturkey", "#padeltime", "#sporankara"]
   max_per_post: 8
 
@@ -55,8 +55,10 @@ daily_publish_time:
   weekend: "18:00"
 
 visual:
-  primary_color: "#0B3D2E"
-  accent_color: "#C8F25C"
+  primary_color: "#F0449B"   # pembe
+  secondary_color: "#0E3D2A" # koyu yeşil
+  light_color: "#FCD9EA"     # açık pembe
+  accent_color: "#D4E30F"    # neon sarı
   text_color: "#FFFFFF"
   font_bold: ""           # boşsa sistemdeki DejaVuSans-Bold kullanılır
   font_regular: ""

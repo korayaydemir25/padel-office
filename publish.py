@@ -39,22 +39,28 @@ def api(method: str, path: str, **params) -> dict:
     return r.json()
 
 
-def wait_container(cid: str) -> None:
-    for _ in range(30):
+def wait_container(cid: str, tries: int = 30, every: int = 5) -> None:
+    for _ in range(tries):
         st = api("GET", cid, fields="status_code").get("status_code")
         if st in (None, "FINISHED"):
             return
         if st == "ERROR":
             raise RuntimeError("Instagram medyayı işleyemedi (status ERROR).")
-        time.sleep(5)
+        time.sleep(every)
     raise TimeoutError("Instagram medya işleme zaman aşımı.")
 
 
 def publish(item: dict) -> str:
-    url = f"https://raw.githubusercontent.com/{REPO}/{SHA}/queue/{item['image']}"
     caption = f"{item['caption']}\n\n{item.get('hashtags') or ''}".strip()
-    c = api("POST", f"{USER_ID}/media", image_url=url, caption=caption)
-    wait_container(c["id"])
+    if item.get("video"):  # reels
+        url = f"https://raw.githubusercontent.com/{REPO}/{SHA}/queue/{item['video']}"
+        c = api("POST", f"{USER_ID}/media", media_type="REELS", video_url=url, caption=caption,
+                share_to_feed="true")
+        wait_container(c["id"], tries=60, every=10)
+    else:
+        url = f"https://raw.githubusercontent.com/{REPO}/{SHA}/queue/{item['image']}"
+        c = api("POST", f"{USER_ID}/media", image_url=url, caption=caption)
+        wait_container(c["id"])
     return api("POST", f"{USER_ID}/media_publish", creation_id=c["id"])["id"]
 
 
